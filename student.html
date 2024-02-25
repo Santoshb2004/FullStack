@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Page</title>
+</head>
+<body>
+
+    <label for="verificationCode">Enter Verification Code:</label>
+    <input type="text" id="verificationCode" name="verificationCode">
+    <button onclick="checkAttendance()">Check Attendance</button>
+
+    <script>
+        function checkAttendance() {
+            // Get the entered code from the input field
+            const enteredCode = document.getElementById('verificationCode').value;
+
+            // Make a POST request to the server
+            fetch('http://localhost:3000/check-attendance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code: enteredCode }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                if (data.success) {
+                    alert('Attendance marked successfully');
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+    </script>
+
+</body>
+</html>
